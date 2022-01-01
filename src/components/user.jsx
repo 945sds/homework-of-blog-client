@@ -1,12 +1,17 @@
 import React from "react";
 import _ from "lodash";
 import { getUser } from "../services/userService";
+import Articles from "./articles";
+import { getArticle } from "./../services/articleService";
 
 class User extends React.Component {
   state = {
+    _id: "",
     name: "",
     description: "",
     email: "",
+    liked_articles: [],
+    published_articles: [],
   };
 
   async componentDidMount() {
@@ -14,7 +19,24 @@ class User extends React.Component {
       const userId = this.props.match.params.id;
 
       const { data: user } = await getUser(userId);
-      this.setState(_.pick(user, ["name", "description", "email"]));
+      this.setState(_.pick(user, ["_id", "name", "description", "email"]));
+
+      const { liked_articles, published_articles } = user;
+      let All_liked_articles = [],
+        All_published_articles = [];
+      for (let liked_article of liked_articles) {
+        const { data: article } = await getArticle(liked_article);
+        All_liked_articles.push(article);
+      }
+      for (let published_article of published_articles) {
+        const { data: article } = await getArticle(published_article);
+        All_published_articles.push(article);
+      }
+
+      this.setState({
+        liked_articles: All_liked_articles,
+        published_articles: All_published_articles,
+      });
     } catch (ex) {
       if (ex.response && ex.response.status === 404) {
         this.props.history.replace("/not-found");
@@ -23,7 +45,14 @@ class User extends React.Component {
   }
 
   render() {
-    const { name, description, email } = this.state;
+    const {
+      name,
+      description,
+      email,
+      liked_articles,
+      published_articles,
+      test,
+    } = this.state;
     return (
       <React.Fragment>
         <div className="jumbotron jumbotron-fluid">
@@ -66,7 +95,7 @@ class User extends React.Component {
             role="tabpanel"
             aria-labelledby="nav-like-tab"
           >
-            功能正在开发中...
+            <Articles test={test} articles={liked_articles} />
           </div>
           <div
             className="tab-pane fade"
@@ -74,6 +103,7 @@ class User extends React.Component {
             role="tabpanel"
             aria-labelledby="nav-publish-tab"
           >
+            <Articles test={test} articles={published_articles} />
           </div>
         </div>
       </React.Fragment>

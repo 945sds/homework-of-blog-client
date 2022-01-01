@@ -12,7 +12,7 @@ class Articles extends React.Component {
     searchQuery: "",
   };
 
-  async componentDidMount() {
+    componentDidMount() {
     this.setState({ articles: this.props.articles });
   }
 

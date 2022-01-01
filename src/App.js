@@ -35,7 +35,7 @@ class App extends React.Component {
               path="/articles/new"
               render={(props) => {
                 if (user === null) return <Redirect to="/login" />;
-                return <ArticleNew {...props} user={this.state.user} />;
+                return <ArticleNew {...props} />;
               }}
             />
             <Route path="/articles/:id" exact component={Article} />

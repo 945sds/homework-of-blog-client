@@ -16,7 +16,7 @@ class ArticleNew extends Form {
   };
 
   doSubmit = async () => {
-    const data = { ...this.state.data, author: this.props.user._id };
+    const data = { ...this.state.data };
     await createArticle(data);
 
     this.props.history.push("/");

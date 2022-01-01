@@ -3,14 +3,22 @@ import config from "../config.json";
 
 const apiEndpoint = config.apiUrl + "/articles";
 
-export async function createArticle(article) {
+export function createArticle(article) {
   return http.post(apiEndpoint, article);
 }
 
-export async function getArticle(articleId) {
-  return await http.get(`${apiEndpoint}/${articleId}`);
+export function getArticle(articleId) {
+  return http.get(`${apiEndpoint}/${articleId}`);
 }
 
-export async function getArticles() {
+export function getArticles() {
   return http.get(apiEndpoint);
+}
+
+export function like(articleId) {
+  return http.post(`${apiEndpoint}/${articleId}/like`, {});
+}
+
+export function unlike(articleId){
+  return http.delete(`${apiEndpoint}/${articleId}/unlike`)
 }
