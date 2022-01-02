@@ -6,15 +6,10 @@ import SearchBox from "./common/searchBox";
 
 class Articles extends React.Component {
   state = {
-    articles: [],
     currentPage: 1,
     pageSize: 3,
     searchQuery: "",
   };
-
-    componentDidMount() {
-    this.setState({ articles: this.props.articles });
-  }
 
   handleSearch = (query) => {
     this.setState({ searchQuery: query, currentPage: 1 });
@@ -24,13 +19,8 @@ class Articles extends React.Component {
     this.setState({ currentPage: page });
   };
 
-  getWorkedArticles = () => {
-    const {
-      articles: allArticles,
-      currentPage,
-      pageSize,
-      searchQuery,
-    } = this.state;
+  getWorkedArticles = (allArticles) => {
+    const { currentPage, pageSize, searchQuery } = this.state;
 
     let filtered = allArticles;
 
@@ -41,20 +31,17 @@ class Articles extends React.Component {
 
     const articles = paginate(filtered, currentPage, pageSize);
 
-    return articles;
+    return { notPagedCount: filtered.length, articles };
   };
 
   render() {
-    const {
-      articles: allArticles,
-      currentPage,
-      pageSize,
-      searchQuery,
-    } = this.state;
+    const { currentPage, pageSize, searchQuery } = this.state;
+
+    const { articles: allArticles } = this.props;
 
     if (allArticles.length === 0) return <p>There are no articles.</p>;
 
-    const articles = this.getWorkedArticles();
+    const { notPagedCount, articles } = this.getWorkedArticles(allArticles);
 
     return (
       <React.Fragment>
@@ -75,7 +62,7 @@ class Articles extends React.Component {
           </div>
         ))}
         <Pagination
-          itemsCount={allArticles.length}
+          itemsCount={notPagedCount}
           currentPage={currentPage}
           pageSize={pageSize}
           onPageChange={this.handlePageChange}

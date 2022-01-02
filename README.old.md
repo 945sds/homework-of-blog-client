@@ -14,17 +14,3 @@ router:
 
 /not-found 页面未找到
 
-
-
-component:
-
-index: header,main,footer
-
-main:
-
-home:articleDescription
-
-login:
-
-common:
-

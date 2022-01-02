@@ -73,7 +73,7 @@ class User extends React.Component {
               aria-controls="nav-like"
               aria-selected="true"
             >
-              点赞过的文章
+              Liked_Articles
             </a>
             <a
               className="nav-link"
@@ -84,7 +84,7 @@ class User extends React.Component {
               aria-controls="nav-publish"
               aria-selected="false"
             >
-              发表的文章
+              Published_Articles
             </a>
           </div>
         </nav>

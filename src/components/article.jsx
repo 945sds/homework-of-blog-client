@@ -39,12 +39,14 @@ class Article extends React.Component {
   }
 
   handleLike = async () => {
-    if (this.state.liked === true) {
-      const { data: article } = await unlike(this.state._id);
-      this.setState({ ...article, liked: false });
-    } else {
-      const { data: article } = await like(this.state._id);
-      this.setState({ ...article, liked: true });
+    if (getCurrentUser()) {
+      if (this.state.liked === true) {
+        const { data: article } = await unlike(this.state._id);
+        this.setState({ ...article, liked: false });
+      } else {
+        const { data: article } = await like(this.state._id);
+        this.setState({ ...article, liked: true });
+      }
     }
   };
 
@@ -56,11 +58,22 @@ class Article extends React.Component {
           <div className="container">
             <h1 className="display-4">{title}</h1>
             <p className="lead">{description}</p>
-            <Like
-              onClick={() => this.handleLike()}
-              liked={liked}
-              number={like_number}
-            />
+            {!getCurrentUser() && (
+              <Link to="/login">
+                <Like
+                  onClick={() => this.handleLike()}
+                  liked={liked}
+                  number={like_number}
+                />
+              </Link>
+            )}
+            {getCurrentUser() && (
+              <Like
+                onClick={() => this.handleLike()}
+                liked={liked}
+                number={like_number}
+              />
+            )}
             <Link to={`/users/${author._id}`}>{author.name}</Link>
           </div>
         </div>
